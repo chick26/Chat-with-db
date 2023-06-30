@@ -25,7 +25,7 @@ export default function Home() {
 		setPrompt(prompt);
 
 		// Post value to API
-		const res = await fetch("http://localhost:3000/api/chat", {
+		const res = await fetch("/api/chat", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -69,11 +69,7 @@ export default function Home() {
 				<section className="flex flex-col mx-auto max-w-7xl h-full justify-between">
 					<div className="flex flex-col flex-1">
 						<div className="flex justify-between items-center">
-							<h1 className="text-2xl font-bold mt-6 mb-6 text-slate-300">Chat to your database</h1>
-							<a href="https://github.com/bayeru/chat-to-your-database" target="_blank" rel="noreferrer" className="flex">
-								<GithubIcon />
-								<h4 className="text-slate-300 ml-4">v0.1.0</h4>
-							</a>
+							<h1 className="text-2xl font-bold mt-6 mb-6 text-slate-300">Chat to Database</h1>
 						</div>
 						{response?.error && response?.error !== "" && (
 							<p className="rounded-xl bg-red-500 text-white p-6 mb-8">{response.error}</p>

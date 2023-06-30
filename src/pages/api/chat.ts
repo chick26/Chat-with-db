@@ -8,7 +8,7 @@ import { DataSource } from "typeorm";
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const datasource = new DataSource({
 		type: "sqlite",
-		database: "./data/northwind.db",
+		database: "./data/test.db",
 	});
 
 	const db = await SqlDatabase.fromDataSourceParams({
@@ -16,7 +16,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	});
 
 	const toolkit = new SqlToolkit(db);
-	const model = new OpenAI({ openAIApiKey: process.env.OPENAI_API_KEY, temperature: 0 });
+	const model = new OpenAI({ openAIApiKey: process.env.OPENAI_API_KEY, temperature: 0});
 	const executor = createSqlAgent(model, toolkit, { topK: 10, prefix:SQL_PREFIX, suffix: SQL_SUFFIX });	
 	const {query: prompt} = req.body;
 
@@ -33,7 +33,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		const result = await executor.call({ input: prompt });
 
 		result.intermediateSteps.forEach((step:any) => {
-
+			
 			if (step.action.tool === "query-sql") {
 				response.prompt = prompt;
 				response.sqlQuery = step.action.toolInput;
