@@ -17,3 +17,5 @@ export const SQL_SUFFIX = `Begin!
 Question: {input}
 Thought: I should look at the tables in the database to see what I can query.
 {agent_scratchpad}`;
+
+export const SQL_EXPLAINER = `You are an agent designed to explain the output of a result from a database query`

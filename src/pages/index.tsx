@@ -74,7 +74,7 @@ export default function Home() {
 						{response?.error && response?.error !== "" && (
 							<p className="rounded-xl bg-red-500 text-white p-6 mb-8">{response.error}</p>
 						)}
-						<div className="relative flex flex-col flex-1 rounded-2xl bg-slate-900 overflow-hidden overflow-y-auto scrollbar-thin scrollbar-track-slate-950 scrollbar-thumb-slate-700 scrollbar-track-rounded-lg scrollbar-thumb-rounded-lg">
+						<div className="overflow-x-auto relative flex flex-col flex-1 rounded-2xl bg-slate-900 overflow-hidden overflow-y-auto scrollbar-thin scrollbar-track-slate-950 scrollbar-thumb-slate-700 scrollbar-track-rounded-lg scrollbar-thumb-rounded-lg">
 							{waitingResponse || firstRun ? (
 								<div className="flex flex-col items-center justify-center h-full">
 									{waitingResponse && (
