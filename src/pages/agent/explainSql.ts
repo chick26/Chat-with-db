@@ -1,28 +1,32 @@
-// import { SQL_PREFIX, SQL_SUFFIX } from "./prompt.js";
+// import { SQL_PREFIX, SQL_SUFFIX } from "@/lib/prompt";
+// import { QuerySqlTool } from "langchain/dist/agents/tools";
 // import { renderTemplate } from "langchain/dist/prompts/template.js";
 // import { LLMChain } from "langchain";
 // import { ZeroShotAgent, AgentExecutor } from "langchain/agents.js";
 // import { SqlToolkit } from "langchain/agents.js";
+// import { SqlDatabase } from "langchain/sql_db";
+// import { Tool } from "langchain/dist/agents/tools";
+// import { extend } from "langchain/agents"
 
 // export interface SqlCreatePromptArgs extends ZeroShotCreatePromptArgs {
 //   /** Number of results to return. */
 //   topK?: number;
 // }
 
-// export class ExplainSqlToolkit extends SqlToolkit {
-	
-// 	tools: Tool[]; 
-//   db: SqlDatabase;
-//   dialect = "sqlite";
+// export declare class databaseExplainer extends Tool {
+//   name: string;
+//   description: string;
+// } 
 
-//   constructor(db: SqlDatabase, llm?: BaseLanguageModel) {
-//     super();
+// export declare class ExplainSqlToolkit extends SqlToolkit {
+
+//   constructor(db: SqlDatabase, tools: Tool[], dialect: string) {
+//     super(db);
 //     this.db = db;
+//     this.dialect = dialect;
 //     this.tools = [
-//       new QuerySqlTool(db),
-//       new InfoSqlTool(db),
-//       new ListTablesSqlTool(db),
-//       new QueryCheckerTool({ llm }),
+//       ...this.tools,
+
 //     ];
 //   }
 // }
