@@ -2,7 +2,6 @@ import ChatForm from "@/components/ChatForm";
 import DataTable from "@/components/DataTable";
 import Preloader from "@/components/Preloader";
 import SqlViewer from "@/components/SqlViewer";
-import GithubIcon from "@/components/icons/GithubIcon";
 import Head from "next/head";
 import { useState } from "react";
 

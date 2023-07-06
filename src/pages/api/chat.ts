@@ -4,6 +4,7 @@ import { SqlToolkit, createSqlAgent } from "langchain/agents";
 import { SqlDatabase } from "langchain/sql_db";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { DataSource } from "typeorm";
+import { createSqlExplainerAgent } from "@/pages/agent/explainSql"
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const datasource = new DataSource({
@@ -17,7 +18,9 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 	const toolkit = new SqlToolkit(db);
 	const model = new OpenAI({ openAIApiKey: process.env.OPENAI_API_KEY, temperature: 0});
-	const executor = createSqlAgent(model, toolkit, { topK: 10, prefix:SQL_PREFIX, suffix: SQL_SUFFIX });	
+	const executor = createSqlExplainerAgent(model, toolkit, { topK: 10, prefix:SQL_PREFIX, suffix: SQL_SUFFIX });
+
+
 	const {query: prompt} = req.body;
 
 	console.log("Prompt : " + prompt);
@@ -33,12 +36,12 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		const result = await executor.call({ input: prompt });
 
 		result.intermediateSteps.forEach((step:any) => {
-			
+
 			if (step.action.tool === "query-sql") {
 				response.prompt = prompt;
 				response.sqlQuery = step.action.toolInput;
 				response.result = JSON.parse(step.observation);
-			}
+			}			
 
 		});
 
