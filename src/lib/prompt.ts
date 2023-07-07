@@ -24,9 +24,9 @@ export const SQL_EXPLAINER = {
 
 export const JSON_REQUEST = `{Input},这句话是在询问从起始城市到终点城市的传输资源方案,其中包含速率的要求,请从这句话当中解析出来两端的城市名称以及速率,并形成JSON格式的数据,例如：{{"ANode": "伦敦","ZNode": "北京","rate": "200M","type": "1"}}, 只输出 JSON 格式内容即可, 无需任何额外信息`
 
-export const JSON_INTERPRETER = `Following JSON is a network routing scheme list with different routes between various locations. For example, The JSON data like {Template_Input} Each element is one solution, its solution shows like:-"伦敦-马赛-吉布提":- "伦敦-马赛"- ciruit detail(which selected by sub ciruit list). The structure of sub circuit is [circuit number][free bandwidth][latency]. Please breakdown of the routes and list out the first 2 solutions in Chinese: {Json_Input}`
+export const JSON_INTERPRETER = `Following JSON is a network routing scheme list with different routes between various locations. For example, The JSON data like {Template_Input} Each element is one solution, its solution shows like:-"伦敦-马赛-吉布提":1."伦敦-马赛",ciruit detail(which selected by sub ciruit list)2."马赛-吉布提",ciruit detail(which selected by sub ciruit list). This Solution contains {start} to the {end} with its sub ciruit. The structure of sub circuit is [circuit number][free bandwidth][latency]. Please breakdown of the routes and list out the first 2 solutions: {Json_Input}`
 
-export const JSON_MERMAID = ``
+export const MERMAID_INTERPRETER = `Follwing data is two routes from {start} to {end}, please convert data into Mermaid script using all the detail including ciruit between each point. The mermaid should be drawn from top to bottom, you should only output the mermaid script without any explaination. The data is as follow: {input}`
 
 export const JSON_API_TEMPLATE = {
   "schemeList": [

@@ -1,4 +1,4 @@
-import { JSON_INTERPRETER, JSON_REQUEST, JSON_API_TEMPLATE } from "@/lib/prompt";
+import { JSON_INTERPRETER, JSON_REQUEST, JSON_API_TEMPLATE, MERMAID_INTERPRETER } from "@/lib/prompt";
 import { LLMChain, PromptTemplate, OpenAI } from "langchain";
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -39,25 +39,50 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     );
     console.log('Step2, Reponse for api', JSON.stringify(response.data));
+
+
     // explain json response
+    const start = JSON.parse(jsonRequest.text).ANode
+    const end = JSON.parse(jsonRequest.text).ZNode
     
     const explainPromptTemplate = new PromptTemplate({
       template: JSON_INTERPRETER,
-      inputVariables: ["Json_Input", "Template_Input"],
+      inputVariables: ["Json_Input", "Template_Input", "start", "end"],
     });
     const explainResponseChain = new LLMChain({ llm, prompt: explainPromptTemplate });
     const explainResponse = await explainResponseChain.call({
       Json_Input: JSON.stringify(response.data), 
-      Template_Input: JSON.stringify(JSON_API_TEMPLATE)
+      Template_Input: JSON.stringify(JSON_API_TEMPLATE),
+      start: start,
+      end: end
     })
     console.log('Step3, explain reponse', explainResponse.text)
 
+    // convert into mermaid
+    const mermaidPromptTemplate = new PromptTemplate({
+      template: MERMAID_INTERPRETER,
+      inputVariables: ["start", "end", "input"],
+    })
+    const mermaidResponseChain = new LLMChain({ llm, prompt: mermaidPromptTemplate });
+    const mermaidResponse = await mermaidResponseChain.call({
+      start: start,
+      end: end,
+      input: explainResponse.text
+    })
+    console.log('Step4, convert into mermaid', mermaidResponse.text)
+
     res.status(200).json({
-      result: explainResponse.text,
+      result: mermaidResponse.text,
       prompt: prompt,
       sqlQuery: jsonRequest.text,
       from: 'json'
     });
+    // res.status(200).json({
+    //   result: explainResponse.text,
+    //   prompt: prompt,
+    //   sqlQuery: jsonRequest.text,
+    //   from: 'json'
+    // });
     
   } catch (e) {
     res.status(500)
