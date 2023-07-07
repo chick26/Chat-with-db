@@ -21,3 +21,7 @@ Thought: I should look at the tables in the database to see what I can query.
 export const SQL_EXPLAINER = {
   'ct_pop_fault': `海缆系统名称是POP_SYS,海缆类型是POP_TYPE,其中1:参建海缆、2:外租海缆,故障段落是POP_FAULT_SEG,故障段落详情是POP_FAULT_SEG_DETAIL,故障原因是POP_FAULT_REASON,影响段落方向是,故障时间是POP_FAULT_TIME,录入时间是CREATE_TIME,更新时间是UPDATE_TIME,船只联系是POP_REPAIR_BOAT,船只动态是POP_REPAIR_DYN_INFO,修复计划是POP_REPAIR_PLANE,修理状态是REPAIR_STATUS,其中修复状态:1:未开始、2:已出发、3:修复中,4-已结束修理结束时间是REPAIR_DONE_TIME,业务中断时间是BUSINESS_BREAK_TIME,业务恢复时间是BUSINESS_RECOVERY_TIME`
 }
+
+export const JSON_REQUEST = `{Input}，这句话是在询问从起始城市到终点城市的传输资源方案，其中包含速率的要求，请从这句话当中解析出来两端的城市名称以及速率，并形成JSON格式的数据，例如：{"ANode": "伦敦","ZNode": "北京","rate": "200M","type": "1"}`
+
+export const JSON_INTERPRETER = `Following JSON is a network routing scheme with different routes between various locations. The structure of sub circuit is [circuit number][free bandwidth][latency]. Please breakdown of the routes and list out the first three solutions in Chinese: {Json_Input}`

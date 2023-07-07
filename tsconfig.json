@@ -25,6 +25,6 @@
       "module": "commonjs"
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/agent/explainSql.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/agent/*.js"],
   "exclude": ["node_modules"]
 }

@@ -18,13 +18,24 @@ export default function Home() {
 	const [firstRun, setFirstRun] = useState(true);
 	const [prompt, setPrompt] = useState("");
 
-	const onPrompt = async (prompt: string) => {
+	const onPrompt = async (prompt: string) => {		
 		setFirstRun(false);
 		setWaitingResponse(true);
 		setPrompt(prompt);
 
 		// Post value to API
-		const res = await fetch("/api/chat", {
+		// const res = await fetch("/api/chat", {
+		// 	method: "POST",
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 	},
+
+		// 	body: JSON.stringify({
+		// 		query: prompt,
+		// 	}),
+		// });
+
+		const res = await fetch("/api/json", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

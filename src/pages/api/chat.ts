@@ -1,6 +1,6 @@
 import { SQL_PREFIX, SQL_SUFFIX } from "@/lib/prompt";
 import { OpenAI } from "langchain";
-import { SqlToolkit, createSqlAgent } from "langchain/agents";
+import { SqlToolkit } from "langchain/agents/toolkits/sql";
 import { SqlDatabase } from "langchain/sql_db";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { DataSource } from "typeorm";
