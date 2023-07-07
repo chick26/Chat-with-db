@@ -1,15 +1,17 @@
 import ChatForm from "@/components/ChatForm";
-import DataTable from "@/components/DataTable";
+import ChatPanel from "@/components/ChatPanel";
 import Preloader from "@/components/Preloader";
 import SqlViewer from "@/components/SqlViewer";
+import { prompt as Prompt, sqlQuery, result  } from '@/lib/mock'
 import Head from "next/head";
 import { useState } from "react";
 
 interface ChatResponse {
 	prompt: string;
 	sqlQuery: string;
-	result: Record<string, string | boolean | number>[];
+	result: any;
 	error: string;
+	from: 'chat' | 'json'
 }
 
 export default function Home() {
@@ -47,6 +49,7 @@ export default function Home() {
 		});
 
 		const data = await res.json();
+
 		setResponse(data);
 		setWaitingResponse(false);
 	};
@@ -93,7 +96,7 @@ export default function Home() {
 									{firstRun && <p className="text-slate-500 mt-4">Type a prompt to get started</p>}
 								</div>
 							) : (
-								<DataTable data={response?.result} />
+								<ChatPanel data={response?.result} from={response?.from} />
 							)}
 						</div>
 					</div>

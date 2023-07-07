@@ -1,5 +1,5 @@
 interface DataTableProps {
-	data?: Record<string, string | boolean | number>[];
+	data?: any;
 }
 
 const DataTable = ({data}: DataTableProps) => {
@@ -8,6 +8,7 @@ const DataTable = ({data}: DataTableProps) => {
 		<div>			
 		</div>
 	);
+
 
 	// From camelCase to Title Case
 	const titles = Object.keys(data[0]).map((item: any) => {
@@ -50,12 +51,12 @@ const DataTable = ({data}: DataTableProps) => {
 	});
 
 	return (
-		<table className="absolute w-full border-collapse">
+		<div className="absolute w-full border-collapse">
 			<thead className="uppercase text-xs text-left sticky top-0 bg-slate-900">
 				<tr>{header}</tr>
 			</thead>
 			<tbody className="text-slate-400">{rows}</tbody>
-		</table>
+		</div>
 	);
 };
 

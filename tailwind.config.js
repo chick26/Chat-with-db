@@ -9,8 +9,10 @@ module.exports = {
 			sans: ["Inter"],
 		},
   },
+  // purge: ['./components/**/*.tsx', './pages/**/*.tsx'],
   plugins: [
     require('@tailwindcss/forms'),
     require('tailwind-scrollbar')({ nocompatible: true }),
+    require('@tailwindcss/typography')
   ],
 }

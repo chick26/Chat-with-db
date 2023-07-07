@@ -1,6 +1,6 @@
 import { SQL_PREFIX, SQL_SUFFIX } from "@/lib/prompt";
 import { OpenAI } from "langchain";
-import { SqlToolkit } from "langchain/agents/toolkits/sql";
+import { SqlToolkit } from "langchain/agents";
 import { SqlDatabase } from "langchain/sql_db";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { DataSource } from "typeorm";
@@ -29,7 +29,8 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		prompt: prompt,
 		sqlQuery: "",
 		result: [],
-		error: ""
+		error: "",
+		from: "chat"
 	};
 
 	try {
@@ -40,7 +41,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			if (step.action.tool === "query-sql") {
 				response.prompt = prompt;
 				response.sqlQuery = step.action.toolInput;
-				response.result = JSON.parse(step.observation);
+				response.result = JSON.parse(step.observation)
 			}			
 
 		});

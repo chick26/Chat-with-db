@@ -1,4 +1,4 @@
-import { JSON_INTERPRETER, JSON_REQUEST } from "@/lib/prompt";
+import { JSON_INTERPRETER, JSON_REQUEST, JSON_API_TEMPLATE } from "@/lib/prompt";
 import { LLMChain, PromptTemplate, OpenAI } from "langchain";
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -10,22 +10,24 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // construct json request
   const {query: prompt} = req.body;
-  const llm = new OpenAI({ openAIApiKey: process.env.OPENAI_API_KEY, temperature: 0 });
+  const llm = new OpenAI({ openAIApiKey: process.env.OPENAI_API_KEY, temperature: 0, modelName: "gpt-3.5-turbo" });
   const promptTemplate = new PromptTemplate({
     template: JSON_REQUEST,
     inputVariables: ["Input"],
   });
+  
   const jsonRequestChain = new LLMChain({ llm, prompt: promptTemplate });
-
+  console.log('Step0, json request', prompt);
+  
   try {
     const jsonRequest = await jsonRequestChain.call({ Input: prompt })
     console.log(
-      'Step1, Response with json request:', jsonRequest
+      'Step1, Response with json request:', jsonRequest.text
     )
     // request for api
     const response = await axios.post(
       request_url, 
-      jsonRequest, 
+      jsonRequest.text, 
       {
         headers: {
           "Accept": "*/*",
@@ -36,16 +38,26 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
       }
     );
-    console.log('Step2, Reponse for api', response.data);
-      // explain json response
+    console.log('Step2, Reponse for api', JSON.stringify(response.data));
+    // explain json response
+    
     const explainPromptTemplate = new PromptTemplate({
       template: JSON_INTERPRETER,
-      inputVariables: ["Json_Input"],
+      inputVariables: ["Json_Input", "Template_Input"],
     });
     const explainResponseChain = new LLMChain({ llm, prompt: explainPromptTemplate });
-    const explainResponse = await explainResponseChain.call({Json_Input: JSON.stringify(response.data)})
-    console.log('Step3, explain reponse', explainResponse)
-    res.status(200).json(explainResponse);
+    const explainResponse = await explainResponseChain.call({
+      Json_Input: JSON.stringify(response.data), 
+      Template_Input: JSON.stringify(JSON_API_TEMPLATE)
+    })
+    console.log('Step3, explain reponse', explainResponse.text)
+
+    res.status(200).json({
+      result: explainResponse.text,
+      prompt: prompt,
+      sqlQuery: jsonRequest.text,
+      from: 'json'
+    });
     
   } catch (e) {
     res.status(500)
