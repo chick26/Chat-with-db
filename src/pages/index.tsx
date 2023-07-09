@@ -2,6 +2,7 @@ import ChatForm from "@/components/ChatForm";
 import ChatPanel from "@/components/ChatPanel";
 import Preloader from "@/components/Preloader";
 import SqlViewer from "@/components/SqlViewer";
+import AutoForm from "@/components/ChatFormAuto";
 import { prompt as Prompt, sqlQuery, result, apiResponse  } from '@/lib/mock'
 import Head from "next/head";
 import { useState } from "react";
@@ -114,8 +115,11 @@ export default function Home() {
 						<div className="p-4 bg-slate-900 rounded-xl w-full mb-8">
 							<SqlViewer content={getSqlViewerContent()} />
 						</div>
-						<div className="flex rounded-2xl flex-col relative">
+						{/* <div className="flex rounded-2xl flex-col relative">
 							<ChatForm onPrompt={onPrompt} />
+						</div> */}
+						<div className="flex rounded-2xl flex-col relative h-16">
+							<AutoForm/>
 						</div>
 					</div>
 				</section>
