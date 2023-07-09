@@ -32,7 +32,7 @@ type Label = {
   label: string
 }
 
-const request_url = 'http://172.24.131.225:9002/QuickPricingAppletService/analyzeAutoChannelForApplet'
+const request_url = process.env.BASE_API_URL + '/QuickPricingAppletService/analyzeAutoChannelForApplet'
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 

@@ -11,7 +11,7 @@ import { LLMChain, PromptTemplate, OpenAI } from "langchain";
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const request_url = 'http://172.24.131.225:9002/QuickPricingAppletService/analyzeAutoChannelForApplet'
+const request_url = process.env.BASE_API_URL + '/QuickPricingAppletService/analyzeAutoChannelForApplet'
 
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
