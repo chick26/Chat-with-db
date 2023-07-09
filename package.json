@@ -10,6 +10,7 @@
     "seed": "npx ts-node ./data/seed.ts"
   },
   "dependencies": {
+    "@napi-rs/pinyin": "^1.7.3",
     "@tailwindcss/typography": "^0.5.9",
     "@types/node": "18.15.11",
     "@types/react": "18.0.32",
@@ -19,6 +20,7 @@
     "eslint-config-next": "13.2.4",
     "langchain": "^0.0.104",
     "md-editor-rt": "^4.2.1",
+    "mermaid": "^10.2.4",
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",

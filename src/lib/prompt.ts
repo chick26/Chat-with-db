@@ -26,7 +26,7 @@ export const JSON_REQUEST = `{Input},这句话是在询问从起始城市到终�
 
 export const JSON_INTERPRETER = `Following JSON is a network routing scheme list with different routes between various locations. For example, The JSON data like {Template_Input} Each element is one solution, its solution shows like:-"伦敦-马赛-吉布提":1."伦敦-马赛",ciruit detail(which selected by sub ciruit list)2."马赛-吉布提",ciruit detail(which selected by sub ciruit list). This Solution contains {start} to the {end} with its sub ciruit. The structure of sub circuit is [circuit number][free bandwidth][latency]. Please breakdown of the routes and list out the first 2 solutions: {Json_Input}`
 
-export const MERMAID_INTERPRETER = `Follwing data is two routes from {start} to {end}, please convert data into Mermaid script using all the detail including ciruit between each point. The mermaid should be drawn from top to bottom, you should only output the mermaid script without any explaination. The data is as follow: {input}`
+export const MERMAID_INTERPRETER = `Follwing data is several routes from {start} to {end}, please convert data into Mermaid script using all the detail including ciruit between each point. Here is an example: The {solution_template} contains several  different routes. They all start from the same {start} to {end}, passing through the same point or some passing an external ponit. As the example input gived above, different routes should be combined as one graph like {mermaid_template}. Now, you should only output the mermaid script without any explaination using the data: {input}`
 
 export const JSON_API_TEMPLATE = {
   "schemeList": [
@@ -45,3 +45,21 @@ export const JSON_API_TEMPLATE = {
     }
   ]
 }
+
+export const MERMAID_TEMPLATE = `
+graph TD
+  START(A)
+  INNER(B)
+  END(C)
+  START -->|ciruit1<br>Bandwidth:bandwidth1<br>Latency:latency1|--> INNER
+  INNER -->|ciruit2<br>Bandwidth:bandwidth2<br>Latency:latency2|--> END
+  START -->|ciruit3<br>Bandwidth:bandwidth3<br>Latency:latency3|--> END
+`
+
+export const SOLUTION_TEMPLATE = `
+Solution 1: A-B-C
+1. A-B:[ciruit1] [bandwidth1] [latency1]
+2. B-C:[ciruit2] [bandwidth2] [latency2]
+Solution 2: A-C
+1. A-C:[ciruit3] [bandwidth3] [latency3]
+`

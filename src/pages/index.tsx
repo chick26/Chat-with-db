@@ -2,7 +2,7 @@ import ChatForm from "@/components/ChatForm";
 import ChatPanel from "@/components/ChatPanel";
 import Preloader from "@/components/Preloader";
 import SqlViewer from "@/components/SqlViewer";
-import { prompt as Prompt, sqlQuery, result  } from '@/lib/mock'
+import { prompt as Prompt, sqlQuery, result, apiResponse  } from '@/lib/mock'
 import Head from "next/head";
 import { useState } from "react";
 
@@ -37,16 +37,26 @@ export default function Home() {
 		// 	}),
 		// });
 
-		const res = await fetch("/api/json", {
+		// const res = await fetch("/api/json", {
+		// 	method: "POST",
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 	},
+
+		// 	body: JSON.stringify({
+		// 		query: prompt,
+		// 	}),
+		// });
+
+		const res = await fetch("/api/mermaid", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-
 			body: JSON.stringify({
-				query: prompt,
-			}),
-		});
+				query: prompt
+			})
+		})
 
 		const data = await res.json();
 
