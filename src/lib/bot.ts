@@ -1,4 +1,4 @@
-import { createSqlExplainerAgent } from "@/pages/agent/explainSql"
+// import { createSqlExplainerAgent } from "@/pages/agent/explainSql"
 
 export interface Bot {
   name: string
