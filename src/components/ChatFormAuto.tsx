@@ -17,7 +17,7 @@ const renderTitle = (title: string) => (
 );
 
 const renderItem = (title: string, label: string) => ({
-  value: title + '/',
+  value: label.includes('example') ? title : title + '/',
   label: (
     <div
       style={{
@@ -47,6 +47,15 @@ const options = [
       renderItem('Chat to API', 'json')
     ],
   },
+  {
+    label: renderTitle('Example'),
+    options: [
+      renderItem('Chat to database/help me to find the latest record of ct fault', 'ct_pop_example'),
+      renderItem('Visualization/请告诉我从法兰克福到新加坡的传输路由方案，要求速率500M', 'mermaid_example'), 
+    ],
+  }
+    
+  
 ];
 
 const AutoForm: React.FC<ChatFormAutoProps> = ({ onPrompt }) => {
