@@ -2,8 +2,8 @@ import ChatForm from "@/components/ChatForm";
 import ChatPanel from "@/components/ChatPanel";
 import Preloader from "@/components/Preloader";
 import SqlViewer from "@/components/SqlViewer";
-import AutoForm from "@/components/ChatFormAuto";
-import { prompt as Prompt, sqlQuery, result, apiResponse  } from '@/lib/mock'
+import AutoForm, { Prompt } from "@/components/ChatFormAuto";
+import { NextApiResponse, NextApiRequest } from "next";
 import Head from "next/head";
 import { useState } from "react";
 
@@ -21,46 +21,22 @@ export default function Home() {
 	const [firstRun, setFirstRun] = useState(true);
 	const [prompt, setPrompt] = useState("");
 
-	const onPrompt = async (prompt: string) => {		
+	const onPrompt = async (prompt: Prompt) => {		
 		setFirstRun(false);
 		setWaitingResponse(true);
-		setPrompt(prompt);
+		setPrompt(prompt.prompt);
 
-		// Post value to API
-		// const res = await fetch("/api/chat", {
-		// 	method: "POST",
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 	},
-
-		// 	body: JSON.stringify({
-		// 		query: prompt,
-		// 	}),
-		// });
-
-		// const res = await fetch("/api/json", {
-		// 	method: "POST",
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 	},
-
-		// 	body: JSON.stringify({
-		// 		query: prompt,
-		// 	}),
-		// });
-
-		const res = await fetch("/api/mermaid", {
+		const res = await fetch(`/api/${prompt.type}`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
+
 			body: JSON.stringify({
-				query: prompt
-			})
-		})
-
+				query: prompt.prompt,
+			}),
+		});
 		const data = await res.json();
-
 		setResponse(data);
 		setWaitingResponse(false);
 	};
@@ -119,7 +95,7 @@ export default function Home() {
 							<ChatForm onPrompt={onPrompt} />
 						</div> */}
 						<div className="flex rounded-2xl flex-col relative h-16">
-							<AutoForm/>
+							<AutoForm onPrompt={onPrompt} />
 						</div>
 					</div>
 				</section>

@@ -7,7 +7,18 @@
 	#__next {
         @apply h-full;
     }
+}
+@layer base  {
+    .ant-select-selection-search-input {
+        @apply focus: border-none !important
+    }
     .ant-select-selector {
-        @apply  height: 4rem !important
+        @apply h-16 bg-inherit border-none rounded-3xl !important;
+    }
+    .ant-select-selection-placeholder {
+        @apply decoration-white !important;
+    }
+    .ant-select-selection-search {
+        @apply py-5 !important;
     }
 }

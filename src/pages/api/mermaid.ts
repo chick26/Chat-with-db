@@ -104,20 +104,20 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const routeContent = route.trim().match(/\[(.+?)\]/g)
     const routeName = routeContent?.at(-3) || ''
 
-    return routeName.replace(/[\[\]']+/g,'')
+    return routeName.replace(/[\[\]\，\：']+/g,'')
   }
   
-  // Build Graph from one Solution
-  function buildMermaidGraph(scheme: Scheme): string {
-    let script = '';
+  // Build Script from one Solution
+  function buildMermaidGraph(scheme: Scheme): string[] {
+    let routeList: any[] = [];
     
     scheme.children.forEach((route: Route) => {
-      const start = queryCountryCode(route.label.split('-')[0]).toString().replaceAll(',', '').toUpperCase()
-      const end = queryCountryCode(route.label.split('-')[1]).toString().replaceAll(',', '').toUpperCase()
-      script += `\t${start} -- ${routeFormat(route.route || '')}<br>Bandwidth:${route.freeRate}<br>Latency:${route.timeDelay} --> ${end}\n`
+      const start = queryCountryCode(route.label.split('-')[0]).toString().replaceAll(',', '').toUpperCase().replaceAll(' ', '-')
+      const end = queryCountryCode(route.label.split('-')[1]).toString().replaceAll(',', '').toUpperCase().replaceAll(' ', '-')
+      const solution = `\t${start} -- ${routeFormat(route.route || '')}<br>Bandwidth:${route.freeRate}<br>Latency:${route.timeDelay} --> ${end}\n`
+      routeList.push(solution)
     })
-
-    return script;
+    return routeList;
   }
 
   function buildMermaidNode(schemeList: Scheme[]): string {
@@ -128,7 +128,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     schemeList.forEach((scheme: Scheme) => {
       scheme.label.split('-').forEach(label => {
         labels.push({
-          id: queryCountryCode(label).toString().replaceAll(',', '').toUpperCase(),
+          id: queryCountryCode(label).toString().replaceAll(',', '').toUpperCase().replaceAll(' ', '-'),
           label: label
         })
       })
@@ -143,16 +143,18 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   
   function constructGraph(graphData: Scheme[]): string {
 
-    let script = ''
+    let script = '', routeList: any[] = []
 
     script += 'graph TD\n';
     script += buildMermaidNode(graphData)
 
     graphData.forEach((schema: Scheme) =>{
-      script += buildMermaidGraph(schema)
+      buildMermaidGraph(schema).forEach(i => {
+        !routeList.includes(i) && routeList.push(i)
+      })
     })
 
-    return script
+    return script += routeList.join('')
   }
 
   res.status(200).json({

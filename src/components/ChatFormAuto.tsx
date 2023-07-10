@@ -1,5 +1,14 @@
-import React from 'react';
-import { AutoComplete, Input, Form, Button } from 'antd';
+import React, {useState} from 'react';
+import { AutoComplete, Input, Form, message } from 'antd';
+
+export type Prompt = {
+  type: 'json' | 'mermaid' | 'chat',
+  prompt: string,
+}
+
+interface ChatFormAutoProps {
+  onPrompt: (prompt:Prompt) => void
+}
 
 const renderTitle = (title: string) => (
   <span>
@@ -40,43 +49,82 @@ const options = [
   },
 ];
 
-const AutoForm: React.FC = () => (
-  <>
-    <Form
-      name="basic"
-      className="flex flex-col relative h-16 my-form"
-      initialValues={{ remember: true }}
-      // onFinish={onFinish}
-      // onFinishFailed={onFinishFailed}
-      autoComplete="off"
-      >
-      <Form.Item
-        className='mb-0 h-16'
+const AutoForm: React.FC<ChatFormAutoProps> = ({ onPrompt }) => {
+
+  const [prompt, setPrompt] = useState('')
+
+  const onFinish = (values: any) => {
+    if (values.prompt.indexOf('/') == -1) {
+      message.warning({ content: 'Please select one command'});
+    }
+    switch (values.prompt.split('/')[0]) {
+      case 'Chat to database':
+        onPrompt({
+          type: 'chat',
+          prompt: values.prompt.split('/')[1]
+        })
+        break;
+      case 'Visualization':
+        onPrompt({
+          type: 'mermaid',
+          prompt: values.prompt.split('/')[1]
+        })
+        break;
+      case 'Chat to API':
+        onPrompt({
+          type: 'json',
+          prompt: values.prompt.split('/')[1]
+        })
+        break;
+      default:
+        break;
+    }
+  };
+  
+
+  return (
+    <div className="my-form">
+      <Form
+        name="basic"
+        className="flex flex-col relative h-16"
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        // onFinishFailed={onFinishFailed}
+        autoComplete="off"
         >
-        <AutoComplete
-          className='h-16 selection:mb-0 bg-slate-700 rounded-2xl resize-none border-0 shadow-md pr-16 placeholder-slate-400'
-          options={options}
-          backfill={true}
-        />
-      </Form.Item>
-      <button className="absolute right-1 top-1/2 -translate-y-1/2 p-4">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
+        <Form.Item
+          className='mb-0 h-16'
+          name="prompt"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-            />
-          </svg>
-      </button>
-    </Form>
-  </>
-);
+          <AutoComplete
+            placeholder="Type here"
+            className='h-16 selection:mb-0 bg-slate-700 rounded-2xl resize-none border-0 shadow-md pr-16 placeholder-slate-400 '
+            options={options}
+            value={prompt}
+            onChange={e => setPrompt(e)}
+            backfill={true}
+          />
+        </Form.Item>
+        <button type="submit" className="absolute right-1 top-1/2 -translate-y-1/2 p-4 bg-slate-700 border-none">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+              />
+            </svg>
+        </button>
+      </Form>
+    </div>
+
+  )
+}
 
 export default AutoForm;

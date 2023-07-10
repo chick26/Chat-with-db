@@ -1,5 +1,4 @@
 import DataTable from "./DataTable";
-import { MdEditor, MdPreview } from "md-editor-rt"
 import ReactMarkdown from "react-markdown"
 import mermaid from "mermaid";
 import { useEffect } from "react";
