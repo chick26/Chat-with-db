@@ -1,10 +1,9 @@
 import { SQL_PREFIX, SQL_SUFFIX } from "@/lib/prompt";
 import { OpenAI } from "langchain";
-import { SqlToolkit } from "langchain/agents/toolkits/sql";
+import { SqlToolkit, createSqlAgent } from "langchain/agents/toolkits/sql";
 import { SqlDatabase } from "langchain/sql_db";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { DataSource } from "typeorm";
-import { createSqlExplainerAgent } from "@/pages/agent/explainSql"
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const datasource = new DataSource({
@@ -18,7 +17,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 	const toolkit = new SqlToolkit(db);
 	const model = new OpenAI({ openAIApiKey: process.env.OPENAI_API_KEY, temperature: 0});
-	const executor = createSqlExplainerAgent(model, toolkit, { topK: 10, prefix:SQL_PREFIX, suffix: SQL_SUFFIX });
+	const executor = createSqlAgent(model, toolkit, { topK: 10, prefix:SQL_PREFIX, suffix: SQL_SUFFIX });
 
 
 	const {query: prompt} = req.body;
