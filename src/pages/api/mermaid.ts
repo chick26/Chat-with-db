@@ -83,7 +83,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   function regenerateSchemeList(data: Scheme[]): Scheme[] {
     let tempList = data
     
-    tempList.forEach((scheme: Scheme) => {
+    tempList?.forEach((scheme: Scheme) => {
       scheme.children.forEach((route: Route) => {
         route.route = route.children && route.children[0].label.replace(/(|)/g, '')
         route.freeRate = route.children && route.children[0].freeRate
@@ -125,7 +125,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     let labels: Label[] = [];
     let script = ''
 
-    schemeList.forEach((scheme: Scheme) => {
+    schemeList?.forEach((scheme: Scheme) => {
       scheme.label.split('-').forEach(label => {
         labels.push({
           id: queryCountryCode(label).toString().replaceAll(',', '').toUpperCase().replaceAll(' ', '-'),
